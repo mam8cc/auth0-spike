@@ -3,7 +3,7 @@ let auth0 = null;
 const configureClient = async () => {
     auth0 = await createAuth0Client({
       domain: 'equipmentshare.auth0.com',
-      client_id: 'Hw3v9tOJKeHiXE7yeDwnQSXbrgqbvQeM'
+      client_id: 'asdasdasdasdasd'
     });
 };
 
@@ -36,12 +36,14 @@ window.onload = async () => {
 
 const updateUI = async () => { 
     const isAuthenticated = await auth0.isAuthenticated();
+    console.log(isAuthenticated);
   
     document.getElementById("btn-logout").disabled = !isAuthenticated;
     document.getElementById("btn-login").disabled = isAuthenticated;
     
     // NEW - add logic to show/hide gated content after authentication
     if (isAuthenticated) {
+      // console.log(await auth0.getTokenSilently());
       document.getElementById("gated-content").classList.remove("hidden");
   
       document.getElementById(
@@ -60,13 +62,15 @@ const updateUI = async () => {
 
 const login = async () => {
     await auth0.loginWithRedirect({
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.origin,
+      audience: 'https://staging-api.equipmentshare.com'
     });
 };
 
 
 const logout = () => {
     auth0.logout({
-      returnTo: window.location.origin
+      returnTo: window.location.origin,
+      responseType: 'token'
     });
   };
